@@ -23,7 +23,10 @@
       </a>
       <h1>Trófeagyűjtemény</h1>
       <p class="collection-sub" id="collectionSub">Betöltés…</p>
-      <p id="completeBanner" class="complete-banner" hidden>🎉 Összegyűjtötted az összes trófeát! Gyere el hozzánk a jutalmadért!</p>
+      <p id="completeBanner" class="complete-banner" role="button" tabindex="-1" aria-live="polite" hidden>
+        <span id="completeBannerText">🎉 Összegyűjtötted az összes trófeát! Gyere el hozzánk a jutalmadért!</span>
+        <span id="redemptionProgress" class="redemption-progress" hidden></span>
+      </p>
     </div>
 
     <div class="collection-grid" id="collectionGrid">
