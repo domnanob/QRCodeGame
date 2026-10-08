@@ -99,7 +99,7 @@ const completeBannerText = document.getElementById('completeBannerText');
 const redemptionProgress = document.getElementById('redemptionProgress');
 const completeTitle = document.getElementById('completeTitle');
 const REDEEMED_STORAGE_KEY = 'qrPrizeRedeemed';
-const COMPLETE_BANNER_TEXT = '🎉 Összegyűjtötted az összes trófeát! Gyere el hozzánk a jutalmadért!';
+const COMPLETE_BANNER_TEXT = '🎉 Összegyűjtötted az összes trófeát! Gyere a Nádasdy Standjához a jutalmadért!';
 const REDEEMED_BANNER_TEXT = '🎉 Köszönjük, hogy játszottál, sikeresen összegyűjtötted az összes trófeát és megszerezted a jutalmad!';
 const COMPLETE_TITLE_TEXT = 'Gratulálunk!';
 let collectionIsComplete = false;
@@ -164,7 +164,7 @@ function showCompleteModal(total) {
   if (completeTitle) completeTitle.textContent = COMPLETE_TITLE_TEXT;
   if (completeDesc) {
     completeDesc.textContent =
-      `Megszerezted mind a ${total} trófeát! Gyere oda hozzánk a standunkhoz, és vedd át a jutalmad!`;
+      `Megszerezted mind a ${total} trófeát! Gyere a Nádasdy Standjához, és vedd át a jutalmad!`;
   }
   completeOverlay.hidden = false;
   requestAnimationFrame(() => completeOverlay.classList.add('open'));
