@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="./assets/css/style.css?v=<?php echo filemtime(__DIR__ . '/assets/css/style.css'); ?>">
   <title>QR Kereső</title>
   <?php
-  function init()
+    $showRedirectModal = isset($_GET['redirect']);
+    function init()
   {
     $rid = unique_id(5);
     setcookie(hash("sha256", "token"), $rid, time()+60*60*24*365, "/");
@@ -42,6 +43,7 @@
   <div class="content">
 
     <h1>Szkenneld be a kódot</h1>
+    <p class="intro-text">Gyűjtsd össze az elrejtett QR kódokat, és szerezd meg a jutalmad! 🏆</p>
 
     <button type="button" class="scan-btn" id="scanBtn" aria-label="QR kód beolvasása">
       <span class="ring"></span>
@@ -60,7 +62,10 @@
 
     <input type="file" id="qrImage" accept="image/*" capture="environment">
 
-    <p id="completeBanner" class="complete-banner" hidden>🎉 Összegyűjtötted az összes trófeát! Gyere el hozzánk a jutalmadért!</p>
+    <p id="completeBanner" class="complete-banner" role="button" tabindex="-1" aria-live="polite" hidden>
+      <span id="completeBannerText">🎉 Összegyűjtötted az összes trófeát! Gyere el hozzánk a jutalmadért!</span>
+      <span id="redemptionProgress" class="redemption-progress" hidden></span>
+    </p>
 
   </div>
 
@@ -83,6 +88,33 @@
       <button type="button" class="reward-ok" id="completeOk">Szuper!</button>
     </div>
   </div>
+
+  <?php if ($showRedirectModal): ?>
+    <div class="reward-overlay" id="redirectOverlay" hidden>
+      <div class="reward-card" role="dialog" aria-modal="true" aria-labelledby="redirectTitle">
+        <button type="button" class="reward-close" id="redirectClose" aria-label="Bezárás">✕</button>
+        <img class="reward-img" src="./assets/img/stickers/traveler.png" alt="Mosolygó utazó">
+        <h2 id="redirectTitle">Szia, QR-vadász! 👋</h2>
+        <p>A matricagyűjtéshez az ezen az oldalon található olvasóval olvasd be a QR-kódokat! A trófeákat csakis így szerezheted meg! ✨</p>
+        <button type="button" class="reward-ok" id="redirectOk">Értem</button>
+      </div>
+    </div>
+    <script>
+      const redirectOverlay = document.getElementById('redirectOverlay');
+      const closeRedirectModal = () => {
+        redirectOverlay.classList.remove('open');
+        setTimeout(() => { redirectOverlay.hidden = true; }, 250);
+      };
+
+      redirectOverlay.hidden = false;
+      requestAnimationFrame(() => redirectOverlay.classList.add('open'));
+      document.getElementById('redirectClose').addEventListener('click', closeRedirectModal);
+      document.getElementById('redirectOk').addEventListener('click', closeRedirectModal);
+      redirectOverlay.addEventListener('click', (event) => {
+        if (event.target === redirectOverlay) closeRedirectModal();
+      });
+    </script>
+  <?php endif; ?>
 
   <script src="./assets/js/trophies.js"></script>
   <script src="./assets/js/script.js"></script>
