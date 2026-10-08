@@ -95,9 +95,73 @@ const completeDesc = document.getElementById('completeDesc');
 const completeClose = document.getElementById('completeClose');
 const completeOk = document.getElementById('completeOk');
 const completeBanner = document.getElementById('completeBanner');
+const completeBannerText = document.getElementById('completeBannerText');
+const redemptionProgress = document.getElementById('redemptionProgress');
+const completeTitle = document.getElementById('completeTitle');
+const REDEEMED_STORAGE_KEY = 'qrPrizeRedeemed';
+const COMPLETE_BANNER_TEXT = '🎉 Összegyűjtötted az összes trófeát! Gyere el hozzánk a jutalmadért!';
+const REDEEMED_BANNER_TEXT = '🎉 Köszönjük, hogy játszottál, sikeresen összegyűjtötted az összes trófeát és megszerezted a jutalmad!';
+const COMPLETE_TITLE_TEXT = 'Gratulálunk!';
+let collectionIsComplete = false;
+let redemptionClickCount = 0;
+
+function updateRedemptionState(isComplete) {
+  collectionIsComplete = isComplete;
+  const isRedeemed = localStorage.getItem(REDEEMED_STORAGE_KEY) === '1';
+  if (!completeBanner) return;
+
+  completeBanner.hidden = !isComplete;
+  if (completeBannerText) {
+    completeBannerText.textContent = isRedeemed ? REDEEMED_BANNER_TEXT : COMPLETE_BANNER_TEXT;
+  }
+  completeBanner.classList.toggle('redeem-enabled', isComplete && !isRedeemed);
+  completeBanner.setAttribute('role', isRedeemed ? 'status' : 'button');
+  completeBanner.tabIndex = isComplete && !isRedeemed ? 0 : -1;
+  completeBanner.title = isComplete && !isRedeemed
+    ? 'A beváltás rögzítéséhez kattints ide 10 alkalommal.'
+    : '';
+  completeBanner.setAttribute(
+    'aria-label',
+    isRedeemed ? REDEEMED_BANNER_TEXT : `${COMPLETE_BANNER_TEXT} Beváltás rögzítéséhez kattints ide 10 alkalommal.`
+  );
+  if (redemptionProgress) redemptionProgress.hidden = true;
+  if (isRedeemed) redemptionClickCount = 0;
+}
+
+function registerRedemptionClick() {
+  if (!collectionIsComplete || localStorage.getItem(REDEEMED_STORAGE_KEY) === '1') return;
+
+  redemptionClickCount += 1;
+  if (redemptionClickCount >= 10) {
+    localStorage.setItem(REDEEMED_STORAGE_KEY, '1');
+    if (completeTitle) completeTitle.textContent = 'Sikeres beváltás!';
+    if (completeDesc) completeDesc.textContent = 'Sikeresen beváltottad a nyereményed. Gratulálunk!';
+    if (completeOverlay) {
+      completeOverlay.hidden = false;
+      requestAnimationFrame(() => completeOverlay.classList.add('open'));
+    }
+    return;
+  }
+
+  if (redemptionProgress) {
+    redemptionProgress.textContent = `Beváltás rögzítése: ${redemptionClickCount}/10 kattintás`;
+    redemptionProgress.hidden = false;
+  }
+}
+
+if (completeBanner) {
+  completeBanner.addEventListener('click', registerRedemptionClick);
+  completeBanner.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      registerRedemptionClick();
+    }
+  });
+}
 
 function showCompleteModal(total) {
   if (!completeOverlay) return;
+  if (completeTitle) completeTitle.textContent = COMPLETE_TITLE_TEXT;
   if (completeDesc) {
     completeDesc.textContent =
       `Megszerezted mind a ${total} trófeát! Gyere oda hozzánk a standunkhoz, és vedd át a jutalmad!`;
@@ -109,7 +173,13 @@ function showCompleteModal(total) {
 function closeCompleteModal() {
   if (!completeOverlay) return;
   completeOverlay.classList.remove('open');
-  setTimeout(() => { completeOverlay.hidden = true; }, 250);
+  setTimeout(() => {
+    completeOverlay.hidden = true;
+    if (localStorage.getItem(REDEEMED_STORAGE_KEY) === '1') {
+      updateRedemptionState(true);
+      if (completeTitle) completeTitle.textContent = COMPLETE_TITLE_TEXT;
+    }
+  }, 250);
 }
 
 if (completeClose) completeClose.addEventListener('click', closeCompleteModal);
@@ -140,7 +210,7 @@ async function refreshCompletionState({ allowModal = false } = {}) {
   const status = await checkCollectionComplete();
   if (!status || !status.complete) return status;
 
-  if (completeBanner) completeBanner.hidden = false;
+  updateRedemptionState(true);
 
   if (allowModal && !localStorage.getItem('allTrophiesCompleteShown')) {
     localStorage.setItem('allTrophiesCompleteShown', '1');
