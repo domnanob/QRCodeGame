@@ -153,8 +153,16 @@ if (!in_array($mime, $allowedMimes, true)) {
 }
 
 // Work on a copy so we never touch PHP's original tmp file directly
-$workPath = tempnam(sys_get_temp_dir(), 'qrsrc_');
-copy($tmpPath, $workPath);
+$uploadTempDir = dirname($tmpPath);
+$workPath = @tempnam($uploadTempDir, 'qrsrc_');
+if ($workPath === false || $workPath === '') {
+    respond(false, ['error' => 'Nem sikerült ideiglenes fájlt létrehozni a kép feldolgozásához.']);
+}
+
+if (!@copy($tmpPath, $workPath)) {
+    @unlink($workPath);
+    respond(false, ['error' => 'Nem sikerült előkészíteni a feltöltött képet feldolgozásra.']);
+}
 
 // Step 1: fix EXIF rotation (JPEG only)
 fixOrientation($workPath, $mime);
