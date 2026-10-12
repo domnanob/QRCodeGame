@@ -24,35 +24,35 @@ const TROPHY_STICKERS = {
 const TROPHY_INFO = {
   qr_1: {
     title: 'Pénzügyi-számviteli ügyintéző',
-    desc: 'Iskolánkban megtanulhatsz pénzügyi-számviteli ügyintézővé válni, aki cégek könyvelését vezeti, bizonylatokat dolgoz fel, és pontos pénzügyi nyilvántartást készít.',
+    desc: 'Iskolánkban pénzügyi-számviteli ügyintézővé tudsz válni, aki cégek könyvelését vezeti, bizonylatokat dolgoz fel, és pontos pénzügyi nyilvántartást készít.',
   },
   qr_2: {
     title: 'Cukrász',
-    desc: 'Iskolánkban megtanulhatsz cukrásszá válni, aki tortákat, süteményeket és desszerteket készít, és a vendégeket finom édességekkel örvendezteti meg.',
+    desc: 'Iskolánkban cukrásszá tudsz válni, aki tortákat, süteményeket és desszerteket készít, és a vendégeket finom édességekkel örvendezteti meg.',
   },
   qr_3: {
     title: 'Szakács',
-    desc: 'Iskolánkban megtanulhatsz szakáccsá válni, aki ízletes ételeket készít, és egy konyha teljes működését irányítja.',
+    desc: 'Iskolánkban szakácsá tudsz válni, aki ízletes ételeket készít, és egy konyha teljes működését irányítja.',
   },
   qr_4: {
     title: 'CNC-programozó',
-    desc: 'Iskolánkban megtanulhatsz CNC-programozóvá válni, aki számítógépes vezérlésű gépeket programoz, és precíz alkatrészeket gyárt.',
+    desc: 'Iskolánkban CNC-programozóvá tudsz válni, aki számítógépes vezérlésű gépeket programoz, és precíz alkatrészeket gyárt.',
   },
   qr_5: {
     title: 'Szoftverfejlesztő és -tesztelő',
-    desc: 'Iskolánkban megtanulhatsz szoftverfejlesztővé és -tesztelővé válni, aki programokat ír, hibákat keres, és modern alkalmazásokat épít.',
+    desc: 'Iskolánkban szoftverfejlesztővé és -tesztelővé tudsz válni, aki programokat ír, hibákat keres, és modern alkalmazásokat épít.',
   },
   qr_6: {
     title: 'Mechatronikai technikus',
-    desc: 'Iskolánkban megtanulhatsz mechatronikai technikussá válni, aki gépészeti, elektronikai és informatikai tudást ötvözve automatizált rendszereket tervez és üzemeltet.',
+    desc: 'Iskolánkban mechatronikai technikussá tudsz válni, aki gépészeti, elektronikai és informatikai tudást ötvözve automatizált rendszereket tervez és üzemeltet.',
   },
   qr_7: {
     title: 'Turisztikai technikus',
-    desc: 'Iskolánkban megtanulhatsz turisztikai technikussá válni, aki utazásokat szervez, programokat állít össze, és vendégeket kalauzol.',
+    desc: 'Iskolánkban turisztikai technikussá tudsz válni, aki utazásokat szervez, programokat állít össze, és vendégeket kalauzol.',
   },
   qr_8: {
     title: 'Pincér - vendégtéri szakember',
-    desc: 'Iskolánkban megtanulhatsz vendégtéri szakemberré válni, aki éttermekben és rendezvényeken gondoskodik a vendégek kényelméről és kiszolgálásáról.',
+    desc: 'Iskolánkban vendégtéri szakemberré tudsz válni, aki éttermekben és rendezvényeken gondoskodik a vendégek kényelméről és kiszolgálásáról.',
   },
 };
 
