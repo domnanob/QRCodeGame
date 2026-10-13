@@ -24,6 +24,7 @@
 </head>
 
 <body>
+  <div class="fg-danger">Error: <span id="errorMessage"></span></div>
 
   <div class="watermark" aria-hidden="true"></div>
 
