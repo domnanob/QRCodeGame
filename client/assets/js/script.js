@@ -114,7 +114,6 @@ input.addEventListener('change', async () => {
     }
     const data = await response.json();
     console.log('QR code decoded:', data.text);
-    document.getElementById("errorMessage").innerText = data.text;
     if (!data.success) {
       setState('error', data.error);
       return;
