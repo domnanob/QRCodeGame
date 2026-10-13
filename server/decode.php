@@ -14,7 +14,7 @@ use Zxing\QrReader;
 // ---------- Config ----------
 const MAX_DIMENSION   = 1000;   // resize longest side to this many px
 const JPEG_QUALITY    = 90;
-const MAX_UPLOAD_SIZE = 15 * 1024 * 1024; // 15 MB safety cap
+const MAX_UPLOAD_SIZE = 30 * 1024 * 1024; // 30 MB safety cap
 
 // ---------- Helpers ----------
 

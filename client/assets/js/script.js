@@ -57,6 +57,36 @@ function setState(state, message) {
   btn.style.pointerEvents = state === 'scanning' ? 'none' : 'auto';
 }
 
+async function prepareImageForUpload(file) {
+  const imageUrl = URL.createObjectURL(file);
+  const image = new Image();
+
+  try {
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = reject;
+      image.src = imageUrl;
+    });
+
+    const scale = Math.min(1, 1600 / Math.max(image.naturalWidth, image.naturalHeight));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(image.naturalWidth * scale);
+    canvas.height = Math.round(image.naturalHeight * scale);
+
+    const context = canvas.getContext('2d');
+    if (!context) return file;
+
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    return await new Promise(resolve => {
+      canvas.toBlob(blob => resolve(blob || file), 'image/jpeg', 0.82);
+    });
+  } catch {
+    return file;
+  } finally {
+    URL.revokeObjectURL(imageUrl);
+  }
+}
+
 btn.addEventListener('click', () => {
   if (btn.classList.contains('scanning')) return;
   input.value = '';
@@ -71,10 +101,17 @@ input.addEventListener('change', async () => {
   setState('scanning', 'Beolvasás…');
 
   const formData = new FormData();
-  formData.append('qrImage', input.files[0]);
 
   try {
+    const originalFile = input.files[0];
+    const uploadImage = await prepareImageForUpload(originalFile);
+    const filename = uploadImage === originalFile ? originalFile.name : 'qr-scan.jpg';
+    formData.append('qrImage', uploadImage, filename);
+
     const response = await fetch('../server/decode.php', { method: 'POST', body: formData });
+    if (!response.ok) {
+      throw new Error(`A szerver elutasította a képfeltöltést (HTTP ${response.status}).`);
+    }
     const data = await response.json();
     console.log('QR code decoded:', data.text);
     document.getElementById("errorMessage").innerText = data.text;
