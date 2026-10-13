@@ -81,7 +81,7 @@ input.addEventListener('change', async () => {
       setState('error', data.error);
       return;
     }
-
+    console.log('QR code decoded:', data.text);
     const code = data.text.split("?")[1];
     const response2 = await fetch(data.text.split("?")[0], {
       method: 'POST',
